@@ -1,10 +1,10 @@
 # backend
 
 #Installation
- Install Java 12
- Instal Mysql
- In your IDE, you'll need the following plugins:
-  Install Lombok
+ 1. Install Java 12
+ 2. Instal Mysql
+ 3. In your IDE, you'll need the following plugins:
+  1. Install Lombok
   
 #Connection to DB
  In order to connect to MYSQL database perform the following:
