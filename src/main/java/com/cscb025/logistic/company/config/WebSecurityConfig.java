@@ -1,6 +1,8 @@
 package com.cscb025.logistic.company.config;
 
+import com.cscb025.logistic.company.exception.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,13 +13,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler()).and()
+                .csrf().disable()
+                .cors().and()
                 .authorizeRequests()
                 .antMatchers("/css/**", "/index").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .and()
-                .formLogin()
-                .loginPage("/login").failureUrl("/login-error");
+                .antMatchers("/user/employee").permitAll()
+                .antMatchers("*").permitAll()
+                .anyRequest()
+                .authenticated();
     }
 
     @Autowired
@@ -25,5 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER");
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
     }
 }

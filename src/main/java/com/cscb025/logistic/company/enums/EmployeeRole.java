@@ -1,5 +1,5 @@
 package com.cscb025.logistic.company.enums;
 
-public enum Role {
+public enum EmployeeRole {
     ADMIN, OFFICE_WORKER, SUPPLIER;
 }

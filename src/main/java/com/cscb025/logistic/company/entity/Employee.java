@@ -1,8 +1,10 @@
 package com.cscb025.logistic.company.entity;
 
-import com.cscb025.logistic.company.enums.Role;
+import com.cscb025.logistic.company.enums.EmployeeRole;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "employees")
 public class Employee {
@@ -32,7 +36,7 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     @NonNull
-    private Role role;
+    private EmployeeRole role;
 
     //Relations
     @ManyToOne
