@@ -10,36 +10,40 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "offices")
-public class Office {
+@Table(name = "clients")
+public class Client {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private String uid;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @NonNull
     private String name;
 
-    @Column(nullable = false)
     @NonNull
-    private String address;
-
     @Column(nullable = false, unique = true)
+    private String email;
+
     @NonNull
+    @Column(nullable = false)
+    private String password;
+
+    @NonNull
+    @Column(nullable = false, unique = true)
     private String phone;
 
     //Relations
-
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     @NonNull
     private Company company;
 
-    @OneToMany(mappedBy = "office")
-    private List<Employee> employees = new ArrayList<>();
+    @OneToMany(mappedBy = "receiver")
+    private List<Shipment> receivedShipments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "office")
-    private List<Shipment> shipments = new ArrayList<>();
+    @OneToMany(mappedBy = "sender")
+    private List<Shipment> sendShipments = new ArrayList<>();
+
 }
