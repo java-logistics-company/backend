@@ -1,4 +1,4 @@
-package com.cscb025.logisticcompany.entity;
+package com.cscb025.logistic.company.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,4 +17,8 @@ public class Office {
 
     @Column(nullable = false)
     private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }
