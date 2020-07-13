@@ -57,4 +57,10 @@ public class CompanyService {
         }
     }
 
+    public String delete(String companyId) {
+        Company company = getCompany(companyId);
+
+        companyRepository.delete(company);
+        return "Company was deleted!";
+    }
 }

@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table()
@@ -22,6 +23,24 @@ public class Shipment {
     @Column(nullable = false)
     @NonNull
     private ShipmentStatus status;
+
+    @Column(nullable = false)
+    private LocalDateTime dateCreated;
+
+    private LocalDateTime dateReceived;
+
+    private LocalDateTime dateUpdated;
+
+    @PrePersist
+    public void setCreatedDate() {
+        this.dateCreated = LocalDateTime.now();
+        this.dateUpdated = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void setUpdateDate() {
+        this.dateUpdated = LocalDateTime.now();
+    }
 
     //Relations
     @ManyToOne

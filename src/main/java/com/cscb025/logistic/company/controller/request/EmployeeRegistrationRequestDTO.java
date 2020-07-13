@@ -1,6 +1,5 @@
 package com.cscb025.logistic.company.controller.request;
 
-import com.cscb025.logistic.company.enums.EmployeeRole;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

@@ -1,5 +1,6 @@
 package com.cscb025.logistic.company.service;
 
+import com.cscb025.logistic.company.controller.request.admin.EditOfficeRequestDTO;
 import com.cscb025.logistic.company.controller.request.admin.OfficeRequestDTO;
 import com.cscb025.logistic.company.controller.response.admin.OfficeResponseDTO;
 import com.cscb025.logistic.company.entity.Company;
@@ -23,7 +24,7 @@ public class OfficeService {
     }
 
     public OfficeResponseDTO view(String companyId) {
-        Office office = checkCompanyExists(companyId);
+        Office office = getOffice(companyId);
         return new OfficeResponseDTO(office.getUid(), office.getName(), office.getAddress(), office.getPhone(), office.getCompany().getName());
     }
 
@@ -42,7 +43,7 @@ public class OfficeService {
         }
     }
 
-    private Office checkCompanyExists(String officeId) {
+    private Office getOffice(String officeId) {
         Optional<Office> office = officeRepository.findById(officeId);
         if (!office.isPresent()) {
             throw new EntityNotFoundException("No such office found!");
@@ -51,4 +52,22 @@ public class OfficeService {
     }
 
 
+    public OfficeResponseDTO edit(EditOfficeRequestDTO officeRequest) {
+        checkOfficeNameExists(officeRequest.getName());
+
+        Office office = getOffice(officeRequest.getUid());
+        office.setAddress(officeRequest.getAddress());
+        office.setName(officeRequest.getName());
+        office.setPhone(officeRequest.getPhone());
+
+        office = officeRepository.save(office);
+        return new OfficeResponseDTO(office.getUid(), office.getName(), office.getAddress(), office.getPhone(), office.getCompany().getName());
+    }
+
+    public String deleteOffice(String officeId){
+        Office office = getOffice(officeId);
+
+        officeRepository.delete(office);
+        return "Office was deleted!";
+    }
 }

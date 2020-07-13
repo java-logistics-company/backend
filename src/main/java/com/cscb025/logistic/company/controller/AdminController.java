@@ -1,6 +1,7 @@
 package com.cscb025.logistic.company.controller;
 
 import com.cscb025.logistic.company.controller.request.admin.CompanyRequestDTO;
+import com.cscb025.logistic.company.controller.request.admin.EditOfficeRequestDTO;
 import com.cscb025.logistic.company.controller.request.admin.OfficeRequestDTO;
 import com.cscb025.logistic.company.controller.response.admin.CompanyResponseDTO;
 import com.cscb025.logistic.company.controller.response.admin.OfficeResponseDTO;
@@ -42,6 +43,12 @@ public class AdminController {
         return ResponseEntity.ok(companyService.view(companyId));
     }
 
+    @DeleteMapping("/company")
+    public ResponseEntity<String> deleteCompany(@RequestBody @NotBlank String companyId){
+        return ResponseEntity.ok(companyService.delete(companyId));
+    }
+
+
     @GetMapping("/office")
     public ResponseEntity<OfficeResponseDTO> getOffice(@RequestBody @NotBlank String officeId) {
         return ResponseEntity.ok(officeService.view(officeId));
@@ -50,6 +57,16 @@ public class AdminController {
     @PostMapping("/office")
     public ResponseEntity<OfficeResponseDTO> registerOffice(@RequestBody @Valid OfficeRequestDTO officeRequest) {
         return ResponseEntity.ok(officeService.register(officeRequest));
+    }
+
+    @PutMapping("/office")
+    public ResponseEntity<OfficeResponseDTO> updateOffice(@RequestBody @Valid EditOfficeRequestDTO officeRequest) {
+        return ResponseEntity.ok(officeService.edit(officeRequest));
+    }
+
+    @DeleteMapping("/office")
+    public ResponseEntity<String> deleteOffice(@RequestBody @NotBlank String officeId){
+        return ResponseEntity.ok(officeService.deleteOffice(officeId));
     }
 
 }
