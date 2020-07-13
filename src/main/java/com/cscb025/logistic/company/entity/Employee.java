@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class Employee extends User {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")

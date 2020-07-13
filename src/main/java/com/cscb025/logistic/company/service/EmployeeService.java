@@ -18,10 +18,10 @@ import java.util.Optional;
 @Service
 public class EmployeeService {
 
-    public static final String EMAIL_ALREADY_TAKEN = "Email, already taken!";
-    public static final String NO_SUCH_OFFICE = "No such office in the system!";
-    public static final String ADMIN_NOT_SUPPORTED = "ADMIN is not supported for registration!";
-    public static final String INVALID_ROLE = "Invalid role for registration!";
+    private static final String EMAIL_ALREADY_TAKEN = "Email, already taken!";
+    private static final String NO_SUCH_OFFICE = "No such office in the system!";
+    private static final String ADMIN_NOT_SUPPORTED = "ADMIN is not supported for registration!";
+    private static final String INVALID_ROLE = "Invalid role for registration!";
     private final EmployeeRepository employeeRepository;
     private final OfficeRepository officeRepository;
 

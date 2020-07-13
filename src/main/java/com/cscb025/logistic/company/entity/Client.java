@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "clients")
-public class Client {
+public class Client extends User{
 
     @Id
     @GeneratedValue(generator = "system-uuid")

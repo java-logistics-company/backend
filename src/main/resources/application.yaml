@@ -17,3 +17,7 @@ spring:
 basic:
   inserts:
     enable: true
+
+jwt:
+  expiration: 7200 #seconds
+  secret: SuperSecretKey
