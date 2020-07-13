@@ -1,5 +1,6 @@
 package com.cscb025.logistic.company.service;
 
+import com.cscb025.logistic.company.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,16 +15,13 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    private final UserService userService;
-
     @Autowired
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
         com.cscb025.logistic.company.entity.User user = userService.findByEmail(username);
+
         return new User(user.getEmail(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(ROLE_PREFIX + user.getUserRole().name())));
     }
 }

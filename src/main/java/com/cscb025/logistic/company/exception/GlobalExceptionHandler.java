@@ -2,6 +2,8 @@ package com.cscb025.logistic.company.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,13 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-//    @ExceptionHandler({TokenExpiredException.class, UsernameNotFoundException.class, BadCredentialsException.class})
-//    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-//    public ResponseEntity<ErrorMessage> handleUnauthorized(Exception e) {
-//        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.UNAUTHORIZED);
-//    }
+    @ExceptionHandler({TokenExpiredException.class, UsernameNotFoundException.class, BadCredentialsException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorMessage> handleUnauthorized(Exception e) {
+        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
 
-    @ExceptionHandler({InvalidRoleException.class, UserExistsException.class})
+    @ExceptionHandler({InvalidRoleException.class, EntityExistsException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorMessage> handleBadRequest(Exception e) {
         return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);

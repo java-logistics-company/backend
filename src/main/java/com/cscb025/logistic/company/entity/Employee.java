@@ -1,10 +1,7 @@
 package com.cscb025.logistic.company.entity;
 
 import com.cscb025.logistic.company.enums.EmployeeRole;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -41,8 +38,12 @@ public class Employee extends User {
     //Relations
     @ManyToOne
     @JoinColumn(name = "office_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Office office;
 
     @OneToMany(mappedBy = "office_worker")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Shipment> registeredShipments = new ArrayList<>(); //registered shipments by office worker
 }

@@ -1,9 +1,7 @@
 package com.cscb025.logistic.company.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -28,8 +26,14 @@ public class Company {
     //Relations
 
     @OneToMany(mappedBy = "company")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private List<Office> offices = new ArrayList<>();
 
     @OneToMany(mappedBy = "company")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JsonIgnore
     private List<Client> clients = new ArrayList<>();
 }

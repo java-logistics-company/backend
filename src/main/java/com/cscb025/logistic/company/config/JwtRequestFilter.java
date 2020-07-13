@@ -2,7 +2,7 @@ package com.cscb025.logistic.company.config;
 
 import com.cscb025.logistic.company.entity.User;
 import com.cscb025.logistic.company.exception.ErrorMessage;
-import com.cscb025.logistic.company.exception.UserNotFoundException;
+import com.cscb025.logistic.company.exception.EntityNotFoundException;
 import com.cscb025.logistic.company.service.JwtUserDetailsService;
 import com.cscb025.logistic.company.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,15 +28,17 @@ import java.io.IOException;
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final JwtUserDetailsService jwtUserDetailsService;
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
+
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
 
     @Autowired
-    public JwtRequestFilter(JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil, UserService userService) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
+    private UserService userService;
+
+    @Autowired
+    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.userService = userService;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             chain.doFilter(request, response);
 
-        } catch (UserNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             log.error("User was deleted!");
             response.setStatus(HttpStatus.GONE.value());
             response.setContentType("application/json");

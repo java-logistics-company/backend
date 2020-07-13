@@ -9,6 +9,7 @@ import com.cscb025.logistic.company.repository.EmployeeRepository;
 import com.cscb025.logistic.company.repository.OfficeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,13 +24,15 @@ public class BasicInserts {
     private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
     private final OfficeRepository officeRepository;
+    private final PasswordEncoder encoder;
 
 
     @Autowired
-    public BasicInserts(CompanyRepository companyRepository, EmployeeRepository employeeRepository, OfficeRepository officeRepository) {
+    public BasicInserts(CompanyRepository companyRepository, EmployeeRepository employeeRepository, OfficeRepository officeRepository, PasswordEncoder encoder) {
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
         this.officeRepository = officeRepository;
+        this.encoder = encoder;
     }
 
     @PostConstruct
@@ -57,6 +60,7 @@ public class BasicInserts {
     private Employee saveEmployee(Employee employee) {
         Optional<Employee> employeeOptional = employeeRepository.findByEmail(employee.getEmail());
         if (!employeeOptional.isPresent()) {
+            employee.setPassword(encoder.encode(employee.getPassword()));
             employee = employeeRepository.save(employee);
             return employee;
         }
