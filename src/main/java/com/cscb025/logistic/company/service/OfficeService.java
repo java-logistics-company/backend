@@ -43,7 +43,7 @@ public class OfficeService {
         }
     }
 
-    private Office getOffice(String officeId) {
+    Office getOffice(String officeId) {
         Optional<Office> office = officeRepository.findById(officeId);
         if (!office.isPresent()) {
             throw new EntityNotFoundException("No such office found!");

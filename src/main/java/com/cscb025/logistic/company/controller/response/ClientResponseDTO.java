@@ -1,6 +1,5 @@
 package com.cscb025.logistic.company.controller.response;
 
-import com.cscb025.logistic.company.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,13 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginResponseDTO {
-
-    private String uid;
+public class ClientResponseDTO {
     private String email;
     private String name;
-    private UserRole userRole;
-    private String officeId;
-
-//    private String phone;
+    private String phone;
 }

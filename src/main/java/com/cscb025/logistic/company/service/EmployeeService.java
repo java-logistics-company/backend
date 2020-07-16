@@ -1,24 +1,29 @@
 package com.cscb025.logistic.company.service;
 
-import com.cscb025.logistic.company.util.JwtTokenUtil;
-import com.cscb025.logistic.company.controller.request.EmployeeRegistrationRequestDTO;
-import com.cscb025.logistic.company.controller.response.UserLoginResponseDTO;
-import com.cscb025.logistic.company.controller.response.UserRegistrationResponseDTO;
+import com.cscb025.logistic.company.controller.request.user.EmployeeEditRequestDTO;
+import com.cscb025.logistic.company.controller.request.user.EmployeeRegistrationRequestDTO;
+import com.cscb025.logistic.company.controller.response.EmployeeResponseDTO;
+import com.cscb025.logistic.company.controller.response.user.UserLoginResponseDTO;
+import com.cscb025.logistic.company.controller.response.user.UserRegistrationResponseDTO;
 import com.cscb025.logistic.company.entity.Employee;
 import com.cscb025.logistic.company.entity.Office;
 import com.cscb025.logistic.company.enums.EmployeeRole;
 import com.cscb025.logistic.company.enums.UserRole;
+import com.cscb025.logistic.company.exception.EntityExistsException;
+import com.cscb025.logistic.company.exception.EntityNotFoundException;
 import com.cscb025.logistic.company.exception.InvalidRoleException;
 import com.cscb025.logistic.company.exception.OfficeNotFoundException;
-import com.cscb025.logistic.company.exception.EntityExistsException;
 import com.cscb025.logistic.company.repository.EmployeeRepository;
 import com.cscb025.logistic.company.repository.OfficeRepository;
+import com.cscb025.logistic.company.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -41,6 +46,14 @@ public class EmployeeService {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
         this.encoder = encoder;
+    }
+
+    public List<EmployeeResponseDTO> getAllEmployees() {
+        return employeeRepository.findAll()
+                .stream()
+                .filter(employee -> employee.getRole() != EmployeeRole.ADMIN)
+                .map(employee -> new EmployeeResponseDTO(employee.getEmail(), employee.getName(), employee.getRole(), employee.getOffice().getName()))
+                .collect(Collectors.toList());
     }
 
     public UserRegistrationResponseDTO register(EmployeeRegistrationRequestDTO user) {
@@ -79,4 +92,38 @@ public class EmployeeService {
                 throw new InvalidRoleException(INVALID_ROLE);
         }
     }
+
+    public UserRegistrationResponseDTO edit(EmployeeEditRequestDTO employeeEditRequest) {
+        Employee employee = getEmployee(employeeEditRequest.getUid());
+
+        employee.setName(employeeEditRequest.getName());
+        employee.setEmail(employeeEditRequest.getEmail());
+        employee.setPassword(employeeEditRequest.getPassword());
+        employeeRepository.save(employee);
+
+        return getResponse(employee);
+    }
+
+    public String delete(String employeeId) {
+        Employee employee = getEmployee(employeeId);
+
+        employeeRepository.delete(employee);
+        return "Employee was deleted!";
+    }
+
+    public UserLoginResponseDTO view(String uid) {
+        Employee employee = getEmployee(uid);
+        return new UserLoginResponseDTO(employee.getUid(), employee.getEmail(), employee.getName(), UserRole.EMPLOYEE, employee.getOffice().getUid());
+        //TODO add employee role and office name
+    }
+
+    Employee getEmployee(String uid) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(uid);
+        if (!employeeOptional.isPresent()) {
+            throw new EntityNotFoundException("No such user in the system!");
+        }
+        return employeeOptional.get();
+    }
+
+
 }

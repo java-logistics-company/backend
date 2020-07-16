@@ -1,14 +1,20 @@
 package com.cscb025.logistic.company.entity;
 
 import com.cscb025.logistic.company.enums.ShipmentStatus;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
-@Table()
+@Table(name = "shipments")
 public class Shipment {
 
     @Id
@@ -17,6 +23,7 @@ public class Shipment {
     private String uid;
 
     @Column(nullable = false)
+    @NonNull
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)

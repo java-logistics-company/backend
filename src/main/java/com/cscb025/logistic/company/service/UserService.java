@@ -1,9 +1,9 @@
 package com.cscb025.logistic.company.service;
 
 import com.cscb025.logistic.company.util.JwtTokenUtil;
-import com.cscb025.logistic.company.controller.request.UserLoginRequestDTO;
-import com.cscb025.logistic.company.controller.response.UserLoginResponseDTO;
-import com.cscb025.logistic.company.controller.response.UserRegistrationResponseDTO;
+import com.cscb025.logistic.company.controller.request.user.UserLoginRequestDTO;
+import com.cscb025.logistic.company.controller.response.user.UserLoginResponseDTO;
+import com.cscb025.logistic.company.controller.response.user.UserRegistrationResponseDTO;
 import com.cscb025.logistic.company.entity.Client;
 import com.cscb025.logistic.company.entity.Employee;
 import com.cscb025.logistic.company.entity.User;

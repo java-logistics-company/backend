@@ -1,4 +1,4 @@
-package com.cscb025.logistic.company.controller.request;
+package com.cscb025.logistic.company.controller.request.user;
 
 import lombok.Data;
 
@@ -29,7 +29,4 @@ public class EmployeeRegistrationRequestDTO {
 
     @NotBlank(message = "Office must not be empty!")
     private String officeId;
-
-//    @Pattern(regexp = "(\\+)?(359|0)8[789]\\d{1}\\d{3}\\d{3}", message = "Invalid phone number format!")
-//    private String phone;
 }

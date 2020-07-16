@@ -1,5 +1,6 @@
-package com.cscb025.logistic.company.controller.response;
+package com.cscb025.logistic.company.controller.response.user;
 
+import com.cscb025.logistic.company.controller.response.user.UserLoginResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,4 @@ public class UserRegistrationResponseDTO {
 
     private UserLoginResponseDTO userLoginResponse;
 
-//    private EmployeeRole employeeRole;
 }

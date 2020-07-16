@@ -3,9 +3,13 @@ package com.cscb025.logistic.company.controller;
 import com.cscb025.logistic.company.controller.request.admin.CompanyRequestDTO;
 import com.cscb025.logistic.company.controller.request.admin.EditOfficeRequestDTO;
 import com.cscb025.logistic.company.controller.request.admin.OfficeRequestDTO;
+import com.cscb025.logistic.company.controller.response.ClientResponseDTO;
 import com.cscb025.logistic.company.controller.response.admin.CompanyResponseDTO;
+import com.cscb025.logistic.company.controller.response.EmployeeResponseDTO;
 import com.cscb025.logistic.company.controller.response.admin.OfficeResponseDTO;
+import com.cscb025.logistic.company.service.ClientService;
 import com.cscb025.logistic.company.service.CompanyService;
+import com.cscb025.logistic.company.service.EmployeeService;
 import com.cscb025.logistic.company.service.OfficeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -22,10 +27,24 @@ public class AdminController {
 
     private final CompanyService companyService;
     private final OfficeService officeService;
+    private final EmployeeService employeeService;
+    private final ClientService clientService;
 
-    public AdminController(CompanyService companyService, OfficeService officeService) {
+    public AdminController(CompanyService companyService, OfficeService officeService, EmployeeService employeeService, ClientService clientService) {
         this.companyService = companyService;
         this.officeService = officeService;
+        this.employeeService = employeeService;
+        this.clientService = clientService;
+    }
+
+    @GetMapping("/employee/all")
+    public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
+    }
+
+    @GetMapping("/client/all")
+    public ResponseEntity<List<ClientResponseDTO>> getAllClients() {
+        return ResponseEntity.ok(clientService.getAll());
     }
 
     @PostMapping("/company")
@@ -44,7 +63,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/company")
-    public ResponseEntity<String> deleteCompany(@RequestBody @NotBlank String companyId){
+    public ResponseEntity<String> deleteCompany(@RequestBody @NotBlank String companyId) {
         return ResponseEntity.ok(companyService.delete(companyId));
     }
 
@@ -65,7 +84,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/office")
-    public ResponseEntity<String> deleteOffice(@RequestBody @NotBlank String officeId){
+    public ResponseEntity<String> deleteOffice(@RequestBody @NotBlank String officeId) {
         return ResponseEntity.ok(officeService.deleteOffice(officeId));
     }
 
