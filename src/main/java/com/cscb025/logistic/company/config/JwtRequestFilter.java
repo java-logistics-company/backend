@@ -1,8 +1,8 @@
 package com.cscb025.logistic.company.config;
 
 import com.cscb025.logistic.company.entity.User;
-import com.cscb025.logistic.company.exception.ErrorMessage;
 import com.cscb025.logistic.company.exception.EntityNotFoundException;
+import com.cscb025.logistic.company.exception.ErrorMessage;
 import com.cscb025.logistic.company.service.JwtUserDetailsService;
 import com.cscb025.logistic.company.service.UserService;
 import com.cscb025.logistic.company.util.JwtTokenUtil;
@@ -49,7 +49,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (isPathPermitted(request)) {
             chain.doFilter(request, response);
         } else {
-            final String requestTokenHeader = request.getHeader("Authorization");
+            String[] cookies = request.getHeader("Cookie").split("; ");
+            String requestTokenHeader = null;
+
+            for (String cookie : cookies
+            ) {
+                if (cookie.trim().startsWith("Bearer")) {
+                    requestTokenHeader = cookie.trim();
+                }
+                break;
+            }
 
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                 tryAcquiringAccessToken(request, response, chain, requestTokenHeader);
@@ -110,20 +119,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 && request.getServletPath().startsWith("/image"));
     }
 
-    //custom method for filtering
-    //TODO remove
-    private boolean isPermitted(HttpServletRequest request) {
-        String servletPath = request.getServletPath();
-        return servletPath.startsWith("/webjars/springfox-swagger-ui/")
-                || servletPath.startsWith("/swagger")
-                || servletPath.startsWith("/v2/api-docs")
-                || servletPath.startsWith("/actuator")
-                || (servletPath.matches("/suppliers/.*/suborders/.*")
-        );
-    }
-
     private boolean isUserPathPermitted(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/user")
-                && !(request.getMethod().equalsIgnoreCase("put"));
+        return ((request.getServletPath().startsWith("/user") || request.getServletPath().startsWith("/chooseRole"))
+                && !(request.getMethod().equalsIgnoreCase("put")))
+                || (request.getServletPath().matches("/signin"))
+                || (request.getServletPath().endsWith(".js") || request.getServletPath().endsWith(".css"));
     }
 }

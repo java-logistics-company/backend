@@ -5,13 +5,13 @@ import com.cscb025.logistic.company.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController
+@Controller
 @RequestMapping("/shipment")
-
 @CrossOrigin(origins = "*")
 public class ShipmentController {
 
@@ -22,8 +22,14 @@ public class ShipmentController {
         this.shipmentService = shipmentService;
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+    public String registerView() {
+        return "employee/registerShipment";
+    }
+
     @PostMapping
-    @PreAuthorize("hasRole('OFFICE_WORKER')")
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
     public ResponseEntity register(@RequestBody @Valid RegisterShipmentRequestDTO registerShipmentRequest,
                                    @RequestAttribute("userId") String userId) {
         return ResponseEntity.ok(shipmentService.register(registerShipmentRequest, userId));

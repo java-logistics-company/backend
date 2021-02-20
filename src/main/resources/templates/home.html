@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<meta charset="UTF-8">
+<title>Home Page</title>
+<link th:href="@{/css/main.css}" rel="stylesheet"/>
+
+<div th:insert="fragments/header :: header"></div>
+
+<h1>HOME PAGE</h1>
+
+<div th:insert="fragments/employeeBody :: employeeBody"></div>
+
+</html>

@@ -65,7 +65,7 @@ public class EmployeeService {
             throw new OfficeNotFoundException(NO_SUCH_OFFICE);
         }
 
-        Employee employee = new Employee(user.getEmail(), encoder.encode(user.getPassword()), EmployeeRole.SUPPLIER);
+        Employee employee = new Employee(user.getEmail(), encoder.encode(user.getPassword()), EmployeeRole.SUPPLIER);//Default supplier role
         employee.setName(user.getName());
         employee.setOffice(office.get());
         setRole(user, employee);

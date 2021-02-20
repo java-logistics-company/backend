@@ -1,6 +1,5 @@
 package com.cscb025.logistic.company.service;
 
-import com.cscb025.logistic.company.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

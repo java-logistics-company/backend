@@ -9,12 +9,13 @@ import com.cscb025.logistic.company.service.EmployeeService;
 import com.cscb025.logistic.company.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 @CrossOrigin(origins = "*")
 public class UserController {
@@ -30,9 +31,11 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @PostMapping("/employee")
-    public ResponseEntity<UserRegistrationResponseDTO> registerEmployee(@RequestBody @Valid EmployeeRegistrationRequestDTO user) {
-        return ResponseEntity.ok(employeeService.register(user));
+    public ResponseEntity<UserRegistrationResponseDTO> registerEmployee(@ModelAttribute("userForm") EmployeeRegistrationRequestDTO userForm) {
+        UserRegistrationResponseDTO responseDTO = employeeService.register(userForm);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping("/employee")
@@ -70,9 +73,10 @@ public class UserController {
         return ResponseEntity.ok(clientService.delete(uid.trim()));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserRegistrationResponseDTO> login(@RequestBody @Valid UserLoginRequestDTO loginRequest) throws TokenExpiredException {
-        return ResponseEntity.ok(userService.getUserLoginResponse(loginRequest));
+    @PostMapping("/signin")
+    public ResponseEntity<UserRegistrationResponseDTO> login(@RequestBody UserLoginRequestDTO loginRequest) throws TokenExpiredException {
+        UserRegistrationResponseDTO responseDTO = userService.getUserLoginResponse(loginRequest);
+        return ResponseEntity.ok(responseDTO);
     }
 
 }

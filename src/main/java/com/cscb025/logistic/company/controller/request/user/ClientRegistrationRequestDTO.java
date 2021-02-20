@@ -31,5 +31,5 @@ public class ClientRegistrationRequestDTO {
     private String phone;
 
     @NotBlank(message = "Company must not be empty!")
-    private String companyId;
+    private String companyName;
 }

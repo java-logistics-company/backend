@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,12 +41,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/css/**", "/index").permitAll()
+                .antMatchers("/css/**", "/index", "/**/*.{js,html,css}").permitAll()
+                .antMatchers("/js/**").permitAll()
                 .antMatchers("/user/employee").permitAll()
-                .antMatchers("/user/login").permitAll()
+                .antMatchers("/chooseRole").permitAll()
+                .antMatchers("/user/signin").permitAll()
+                .antMatchers("/user/").permitAll()
+                .antMatchers("/user/welcome").permitAll()
+                .antMatchers("/user/registration").permitAll()
+                .antMatchers("/authenticate").permitAll()
                 .antMatchers("*").permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated().and()
+                //Login Page Simulator Client
+                .formLogin().loginPage("/signin").permitAll().and()
+                // store user's state.
+//                        .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                //Do not use session
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

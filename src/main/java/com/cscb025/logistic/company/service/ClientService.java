@@ -46,7 +46,7 @@ public class ClientService {
         if (clientRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new EntityExistsException(EMAIL_ALREADY_TAKEN);
         }
-        Company company = companyService.getCompany(user.getCompanyId());
+        Company company = companyService.getCompany(user.getCompanyName());
 
         Client client = new Client(user.getName(), user.getEmail(), encoder.encode(user.getPassword()), user.getPhone(), company);
         client = clientRepository.save(client);
